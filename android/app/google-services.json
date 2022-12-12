@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "202643189835",
+    "project_id": "women-saferty-app",
+    "storage_bucket": "women-saferty-app.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:202643189835:android:20682fe254f59be46dddce",
+        "android_client_info": {
+          "package_name": "com.thereforeyou.first"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "202643189835-nd8hdol31nsg5ph8s8j25bksjig3d6or.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBAp-nBrPnBkqvqQecybVJzqWtZRB_9jeU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "202643189835-nd8hdol31nsg5ph8s8j25bksjig3d6or.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
