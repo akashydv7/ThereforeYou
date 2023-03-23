@@ -14,7 +14,15 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:first/shared/loading.dart';
 import 'package:first/shared/constants.dart';
 import 'package:flutter_phone_direct_caller/flutter_phone_direct_caller.dart';
+import 'package:first/screens/notification/notifications.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:flutter_callkit_incoming/flutter_callkit_incoming.dart';
+import 'package:flutter_callkit_incoming/entities/android_params.dart';
+import 'package:flutter_callkit_incoming/entities/call_kit_params.dart';
+import 'package:flutter_callkit_incoming/entities/ios_params.dart';
+import 'package:flutter_callkit_incoming/flutter_callkit_incoming.dart';
+import 'package:uuid/uuid.dart';
+
 final AuthService _auth = AuthService.instance();
 
 // declared detector here
@@ -107,6 +115,55 @@ _callNumber() async{
   const number = '7489035006'; //set the number here
   bool? res = await FlutterPhoneDirectCaller.callNumber(number);
 }
+
+Future<void> showCallkitIncoming(String uuid) async {
+  final params = CallKitParams(
+    id: uuid,
+    nameCaller: 'Mummy',
+    appName: 'Callkit',
+    avatar: 'https://i.pravatar.cc/100',
+    handle: '0123456789',
+    type: 0,
+    duration: 30000,
+    textAccept: 'Accept',
+    textDecline: 'Decline',
+    textMissedCall: 'Missed call',
+    textCallback: 'Call back',
+    extra: <String, dynamic>{'userId': '1a2b3c4d'},
+    headers: <String, dynamic>{'apiKey': 'Abc@123!', 'platform': 'flutter'},
+    android: AndroidParams(
+      isCustomNotification: true,
+      isShowLogo: false,
+      isShowCallback: true,
+      isShowMissedCallNotification: true,
+      ringtonePath: 'system_ringtone_default',
+      backgroundColor: '#0955fa',
+      // backgroundUrl: 'assets/test.png',
+      actionColor: '#4CAF50',
+    ),
+    ios: IOSParams(
+      iconName: 'CallKitLogo',
+      handleType: '',
+      supportsVideo: true,
+      maximumCallGroups: 2,
+      maximumCallsPerCallGroup: 1,
+      audioSessionMode: 'default',
+      audioSessionActive: true,
+      audioSessionPreferredSampleRate: 44100.0,
+      audioSessionPreferredIOBufferDuration: 0.005,
+      supportsDTMF: true,
+      supportsHolding: true,
+      supportsGrouping: false,
+      supportsUngrouping: false,
+      ringtonePath: 'system_ringtone_default',
+    ),
+  );
+  await FlutterCallkitIncoming.showCallkitIncoming(params);
+}
+_fakeCall() {
+  late final Uuid _uuid = Uuid();
+  showCallkitIncoming(_uuid.toString());
+}
 class _DemoPageState extends State<DemoPage> {
   
   Tracking tracker = Tracking();
@@ -173,6 +230,12 @@ class _DemoPageState extends State<DemoPage> {
   
     // To close: detector.stopListening();
     // ShakeDetector.waitForStart() waits for user to call detector.startListening();
+  
+  // Notification Bar
+  NotificationService.initializeNotification();
+  NotificationService.showNotificaion();
+
+  
   }
 
 
@@ -215,7 +278,7 @@ class _DemoPageState extends State<DemoPage> {
                       Contacts(data: data!.contact2),
                       SizedBox(height: 10,),
                       Contacts(data: data!.contact3),
-                      SizedBox(height: 50,),
+                      SizedBox(height: 20,),
                       
                       TextButton(
                         style: TextButton.styleFrom(
@@ -230,6 +293,22 @@ class _DemoPageState extends State<DemoPage> {
                           _sendSMS();
                         }),
                         child: Text("S O S", style: TextStyle(color: white, fontSize: 40))
+                      ),
+                      
+                      SizedBox(height: 20,),
+                      
+                      TextButton(
+                        style: TextButton.styleFrom(
+                          backgroundColor: red,
+                          padding: EdgeInsets.symmetric(horizontal: 20),
+                          elevation: 2,
+                          fixedSize: Size(300, 80),
+                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+                        ),
+                        onPressed: (()async {
+                          _fakeCall();
+                        }),
+                        child: Text("FAKE CALL", style: TextStyle(color: white, fontSize: 40))
                       ),
                     
                     ],
