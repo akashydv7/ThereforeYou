@@ -1,8 +1,7 @@
+import 'package:first/shared/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
-import 'package:flutter_sms/flutter_sms.dart';
-import 'package:background_sms/background_sms.dart';
 
 class LocationPage extends StatefulWidget {
   @override
@@ -32,11 +31,23 @@ class _LocationPageState extends State<LocationPage> {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Container(
+        
+        decoration: BoxDecoration(
+          boxShadow:[
+            BoxShadow(
+              color: Colors.grey,
+              blurRadius: 10,
+              offset: Offset(0, 3),
+            ),
+          ],
+          // border: Border.all(width: 0, color: gunmetal),
+          // borderRadius: BorderRadius.all(Radius.circular(20))
+        ),
         child: ClipRRect(
           borderRadius: BorderRadius.all(Radius.circular(20)),
           child: Container(
             height: MediaQuery.of(context).size.height/3.5,
-            width: MediaQuery.of(context).size.width,
+            width: MediaQuery.of(context).size.width*0.9,
             child: Stack(
               children: [
                 GoogleMap(
@@ -45,7 +56,7 @@ class _LocationPageState extends State<LocationPage> {
                   onMapCreated: _onMapCreated,
                   myLocationEnabled: true,
                 ),
-                SizedBox(height: 50),
+                // SizedBox(height: 50),
               ],
             ),
           ),

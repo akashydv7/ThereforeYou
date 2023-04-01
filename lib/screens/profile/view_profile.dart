@@ -63,13 +63,16 @@ class _ViewProfilePageState extends State<ViewProfilePage> {
       future: getData(),
       builder: (context, snapshot) {
         return loading?Loading():Scaffold(
+              backgroundColor: white2,
               appBar: AppBar(
-                backgroundColor: white,
+                centerTitle: true,
+                title: Text("PROFILE", style: TextStyle(fontSize: 25, fontWeight: FontWeight.w500)),
+                backgroundColor: gunmetal,
                 elevation: 0,
                 leading: IconButton(
                   icon: Icon(
                     Icons.arrow_back,
-                    color: black,
+                    color: white,
                   ),
                   onPressed: () {
                     Navigator.popAndPushNamed(context, './home');
@@ -86,79 +89,123 @@ class _ViewProfilePageState extends State<ViewProfilePage> {
                   },
                   child: ListView(
                     children: [
-                      Center(
-                        child: Container(
-                          child: Text(
-                            "YOUR PROFILE",
-                            style: TextStyle(fontSize: 25, fontWeight: FontWeight.w500),
-                          ),
-                        ),
-                      ),
-                      SizedBox(
-                        height: 15,
-                      ),
-                      Center(
-                        child: Stack(
-                          children: [
-                            Container(
-                              width: 130,
-                              height: 130,
-                              child: Icon(Icons.person, size: 50, color: black,),
-                              decoration: BoxDecoration(
-                                  border: Border.all(
-                                      width: 4,
-                                      color: Theme.of(context).scaffoldBackgroundColor),
-                                  boxShadow: [
-                                    BoxShadow(
-                                        spreadRadius: 2,
-                                        blurRadius: 10,
-                                        color: Colors.black.withOpacity(0.1),
-                                        offset: Offset(0, 10))
-                                  ],
-                                  shape: BoxShape.circle,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
+                          Container(
+                            padding: EdgeInsets.all(20),
+                            margin: EdgeInsets.only(top: 20),
+                            decoration: textBoxDecoration,
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  "USERNAME",
+                                  style: TextStyle(fontSize: 15),
+                                ),
+                                SizedBox(height:8),
+                                Text(
+                                  data!.name.toUpperCase(),
+                                  style: TextStyle(fontSize: 18),
+                                ),
+                                SizedBox(height: 10),
+                                Text(
+                                  "EMAIL",
+                                  style: TextStyle(fontSize: 15),
+                                ),
+                                SizedBox(height:8),
+                                Text(
+                                  data!.email,
+                                  style: TextStyle(fontSize: 18),
+                                ),
+                              ],
+                            ),
+                          ),
+                          SizedBox(height: 25),
+                          Container(
+                            padding: EdgeInsets.all(20),
+                            // margin: EdgeInsets.only(top: 100),
+                            width: MediaQuery.of(context).size.width*0.9,
+                            decoration: textBoxDecoration,
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  "EMERGENCY CONTACTS",
+                                  style: TextStyle(fontSize: 15),
+                                ),
+                                SizedBox(height:8),
+                                Text(
+                                  data!.contactName1.toUpperCase(),
+                                  style: TextStyle(fontSize: 18),
+                                ),
+                                SizedBox(height:8),
+                                Text(
+                                  data!.contact1,
+                                  style: TextStyle(fontSize: 18),
+                                ),
+                                SizedBox(height: 10),
+                                
+                                Text(
+                                  data!.contactName2.toUpperCase(),
+                                  style: TextStyle(fontSize: 18),
+                                ),
+                                SizedBox(height:8),
+                                Text(
+                                  data!.contact2,
+                                  style: TextStyle(fontSize: 18),
+                                ),
+                                SizedBox(height: 10),
+                                
+                                Text(
+                                  data!.contactName3.toUpperCase(),
+                                  style: TextStyle(fontSize: 18),
+                                ),
+                                SizedBox(height:8),
+                                Text(
+                                  data!.contact3,
+                                  style: TextStyle(fontSize: 18),
+                                ),
+                                SizedBox(height: 10),
+                                
+                              ],
+                            ),
+                          ),
+                          SizedBox(height:25),
+                          Container(
+                            padding: EdgeInsets.all(20),
+                            // margin: EdgeInsets.only(top: 100),
+                            width: MediaQuery.of(context).size.width*0.9,
+                            decoration: textBoxDecoration,
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  "FAKE CALL CONTACT",
+                                  style: TextStyle(fontSize: 15),
+                                ),
+                                SizedBox(height: 8,),
+                                Text(
+                                  data!.fakeContactName.toUpperCase(),
+                                  style: TextStyle(fontSize: 18),
+                                ),
+                                SizedBox(height:8),
+                                Text(
+                                  data!.fakeContact,
+                                  style: TextStyle(fontSize: 18),
+                                ),
+                                SizedBox(height: 10),
+                              ]
+                            )
+                          ),
                           SizedBox(
                             height: 35,
                           ),
-                      // Text(data["name"]!),
-                      DisplayText(data!.name),
-                      SizedBox(
-                        height: 35,
-                      ),
-                      // Text(data["email"]!),
-                      DisplayText(data!.email),
-                      SizedBox(
-                        height: 35,
-                      ),
-                      // Text(data["contact1"]!),
-                      DisplayText(data!.contact1),
-                      SizedBox(
-                        height: 35,
-                      ),
-                      // Text(data["contact2"]!),
-                      DisplayText(data!.contact2),
-                      SizedBox(
-                        height: 35,
-                      ),
-                      // Text(data["contact3"]!),
-                      DisplayText(data!.contact3),
-                      SizedBox(
-                        height: 35,
-                      ),
-                        ]),
-                      Expanded(
-
-                        child: Align(
-                          alignment: FractionalOffset.bottomCenter,
-                          child: Row(
+                            ]),
+                          Expanded(
+                            child: Align(
+                              alignment: FractionalOffset.bottomCenter,
+                              child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 ElevatedButton(

@@ -1,36 +1,26 @@
 import 'package:flutter/material.dart';
 import 'dart:async';
 import 'package:shake/shake.dart';
-import 'package:sensors_plus/sensors_plus.dart';
 import 'package:first/services/auth.dart';
-import 'package:first/services/networking.dart';
-import 'package:first/screens/sos/tracking.dart';
+// import 'package:first/screens/sos/tracking.dart';
 import 'package:first/screens/location/location_page.dart';
-import 'package:location/location.dart';
-import 'package:background_sms/background_sms.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:first/services/database.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:first/shared/loading.dart';
 import 'package:first/shared/constants.dart';
-import 'package:flutter_phone_direct_caller/flutter_phone_direct_caller.dart';
 import 'package:first/screens/notification/notifications.dart';
-import 'package:permission_handler/permission_handler.dart';
-import 'package:flutter_callkit_incoming/flutter_callkit_incoming.dart';
-import 'package:flutter_callkit_incoming/entities/android_params.dart';
-import 'package:flutter_callkit_incoming/entities/call_kit_params.dart';
-import 'package:flutter_callkit_incoming/entities/ios_params.dart';
-import 'package:flutter_callkit_incoming/flutter_callkit_incoming.dart';
-import 'package:uuid/uuid.dart';
+import 'package:first/services/utility.dart';
+import 'package:home_widget/home_widget.dart';
 
 final AuthService _auth = AuthService.instance();
 
-// declared detector here
 late ShakeDetector detector;
 final CollectionReference appUsers = FirebaseFirestore.instance.collection('Users');
 FirebaseAuth auth = FirebaseAuth.instance;
 late AppUser? data;
 final String uid = auth.currentUser!.uid;
+
 Future<Object> getData() async {
         detector.startListening();
         final ref = appUsers.doc(uid).withConverter(
@@ -52,34 +42,45 @@ Future<Object> getData() async {
 }
 
 class Contacts extends StatelessWidget {
-  String data;
-  Contacts({super.key, required this.data});
+  String data, name;
+  Contacts({super.key, required this.data, required this.name});
 
   @override
   Widget build(BuildContext context) {
+    Size screenSize = MediaQuery.of(context).size;
 
     return Center(
       child: Card(
-        elevation: 1,
+        elevation: 10,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
         shadowColor: black,
-        child: SizedBox(
-          width: 320,
-          height: 60,
+        child: Container(
+          width: screenSize.width*0.7,
+          height: screenSize.height*0.07,
           child: Center(
             child: Row(
               children: <Widget>[
                 SizedBox(width: 10,),
                 Icon(
                   Icons.person,
-                  size: 40,
-                  color: white2,
+                  size: screenSize.height*0.04,
+                  color: gunmetal,
                   ),
                 SizedBox(width: 35,),
-                Text(
-                  data,
-                  style: TextStyle(color: Colors.black, fontSize: 20)
-                  )
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      name,
+                      style: TextStyle(color: gunmetal, fontSize: 20)
+                      ),
+                    Text(
+                      data,
+                      style: TextStyle(color: gunmetal, fontSize: 20)
+                      ),
+                  ],
+                )
                 
               ],
             )
@@ -91,86 +92,23 @@ class Contacts extends StatelessWidget {
 }
 
 bool loading = true;
+
+
 class DemoPage extends StatefulWidget {
   
   @override
   _DemoPageState createState() => _DemoPageState();
   
 }
-void _sendSMS() async {
-    String to1 = data!.contact1;
-    String to2 = data!.contact2;
-    String to3 = data!.contact3;
-    Location _location = Location();
-    LocationData ldata = await _location.getLocation();
-    String message = '''
-***** SOS *****
-I AM IN TROUBLE, NEED YOUR HELP!
-https://www.google.com/maps/search/?api=1&query=${ldata.latitude},${ldata.longitude}''';
-      await BackgroundSms.sendMessage(phoneNumber: to1, message: message);
-      await BackgroundSms.sendMessage(phoneNumber: to2, message: message);
-      await BackgroundSms.sendMessage(phoneNumber: to3, message: message);
-  }
-_callNumber() async{
-  const number = '7489035006'; //set the number here
-  bool? res = await FlutterPhoneDirectCaller.callNumber(number);
-}
 
-Future<void> showCallkitIncoming(String uuid) async {
-  final params = CallKitParams(
-    id: uuid,
-    nameCaller: 'Mummy',
-    appName: 'Callkit',
-    avatar: 'https://i.pravatar.cc/100',
-    handle: '0123456789',
-    type: 0,
-    duration: 30000,
-    textAccept: 'Accept',
-    textDecline: 'Decline',
-    textMissedCall: 'Missed call',
-    textCallback: 'Call back',
-    extra: <String, dynamic>{'userId': '1a2b3c4d'},
-    headers: <String, dynamic>{'apiKey': 'Abc@123!', 'platform': 'flutter'},
-    android: AndroidParams(
-      isCustomNotification: true,
-      isShowLogo: false,
-      isShowCallback: true,
-      isShowMissedCallNotification: true,
-      ringtonePath: 'system_ringtone_default',
-      backgroundColor: '#0955fa',
-      // backgroundUrl: 'assets/test.png',
-      actionColor: '#4CAF50',
-    ),
-    ios: IOSParams(
-      iconName: 'CallKitLogo',
-      handleType: '',
-      supportsVideo: true,
-      maximumCallGroups: 2,
-      maximumCallsPerCallGroup: 1,
-      audioSessionMode: 'default',
-      audioSessionActive: true,
-      audioSessionPreferredSampleRate: 44100.0,
-      audioSessionPreferredIOBufferDuration: 0.005,
-      supportsDTMF: true,
-      supportsHolding: true,
-      supportsGrouping: false,
-      supportsUngrouping: false,
-      ringtonePath: 'system_ringtone_default',
-    ),
-  );
-  await FlutterCallkitIncoming.showCallkitIncoming(params);
-}
-_fakeCall() {
-  late final Uuid _uuid = Uuid();
-  showCallkitIncoming(_uuid.toString());
-}
 class _DemoPageState extends State<DemoPage> {
   
-  Tracking tracker = Tracking();
+  // Tracking tracker = Tracking();
   String link = "none";
   @override
   void initState() {
     super.initState();
+    HomeWidget.widgetClicked.listen((Uri? uri) => AppUtility.fakeCall());
     showAlertDialog(BuildContext context) {
 // set up the button
       Widget cancelButton = TextButton(
@@ -180,8 +118,8 @@ class _DemoPageState extends State<DemoPage> {
       Widget continueButton = TextButton(
         child: Text("Yes"),
         onPressed:  (()async {
-              _sendSMS();
-              _callNumber();
+              AppUtility.sendSMS("data");
+              AppUtility.callNumber();
           }),
       );
 
@@ -232,94 +170,107 @@ class _DemoPageState extends State<DemoPage> {
     // ShakeDetector.waitForStart() waits for user to call detector.startListening();
   
   // Notification Bar
-  NotificationService.initializeNotification();
-  NotificationService.showNotificaion();
+  // NotificationService.initializeNotification();
+  // NotificationService.showNotificaion();
 
   
   }
 
-
+  Future<bool> _onWillPop() async {
+    return false; //<-- SEE HERE
+  }
   @override
   Widget build(BuildContext context) {
+    final Size screenSize = MediaQuery.of(context).size;
+    final double buttonSize = screenSize.width * 0.3;
+
     return FutureBuilder<Object>(
       future: getData(),
       builder: (context, snapshot) {
-        return loading?Loading():Scaffold(
-          backgroundColor: white,
-          appBar: AppBar(
+        return loading?Loading():WillPopScope(
+          onWillPop: _onWillPop,
+          child: Scaffold(
             backgroundColor: white2,
-            title: Center(child: Text('Therefor(e)You',)),
-            centerTitle: true,
-            actions: [
-              IconButton(onPressed: (){
-                Navigator.popAndPushNamed(context,'./viewProfile');
-              },
-              icon: Icon(Icons.settings))
-            ],
-          ),
-          body: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              
-              LocationPage(),
-              SizedBox(height: 20,),
-              Expanded(
-                child: Container(
-                  decoration: BoxDecoration(
-                  color: white2,
-                  borderRadius: BorderRadius.vertical(top: Radius.circular(50))),
+            appBar: AppBar(
+              backgroundColor: gunmetal,
+              title: Center(child: Text('Therefor(e)You',)),
+              centerTitle: true,
+              actions: [
+                IconButton(onPressed: (){
+                  Navigator.popAndPushNamed(context,'./viewProfile');
+                },
+                icon: Icon(Icons.settings))
+              ],
+            ),
+            body: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                
+                LocationPage(),
+                // SizedBox(height: 10,),
+                Expanded(
                   child: Column(
-                    children: <Widget>[
-                      SizedBox(height:10),
-                      Text("EMERGENCY CONTACTS", style: TextStyle(color: white, fontSize: 15),),
-                      SizedBox(height: 10,),
-                      Contacts(data: data!.contact1),
-                      SizedBox(height: 10,),
-                      Contacts(data: data!.contact2),
-                      SizedBox(height: 10,),
-                      Contacts(data: data!.contact3),
-                      SizedBox(height: 20,),
-                      
-                      TextButton(
-                        style: TextButton.styleFrom(
-                          backgroundColor: red,
-                          padding: EdgeInsets.symmetric(horizontal: 20),
-                          elevation: 2,
-                          fixedSize: Size(300, 80),
-                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      // SizedBox(height:10),
+                      SizedBox(height : screenSize.width*0.02),
+                      Text("EMERGENCY CONTACTS", style: TextStyle(color: black, fontSize: 15),),
+                      // SizedBox(height: 10,),
+                      SizedBox(height : screenSize.width*0.02),
+                      Contacts(data: data!.contact1, name: data!.contactName1,),
+                      // SizedBox(height: 10,),
+                      SizedBox(height : screenSize.width*0.03),
+                      Contacts(data: data!.contact2, name: data!.contactName2),
+                      // SizedBox(height: 10,),
+                      SizedBox(height : screenSize.width*0.03),
+                      Contacts(data: data!.contact3, name: data!.contactName3,),
+                      SizedBox(height : screenSize.width*0.03),
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: <Widget>[
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              TextButton(
+                                style: mainButtonStyle(buttonSize, red),
+                                onPressed: (()async {
+                                  AppUtility.callNumber();
+                                  AppUtility.sendSMS("data");
+                                }),
+                                child: Text("S O S", style: TextStyle(color: white, fontSize: 20))
+                              ),
+                              TextButton(
+                            style: mainButtonStyle(buttonSize, green),
+                            onPressed: (()async {
+                              // AppUtility.fakeCall();
+                              Navigator.pushNamed(context, "./police",);
+                            }),
+                            child: Text("Take me to police", style: TextStyle(color: white, fontSize: 20))
+                          ),
+        
+                          TextButton(
+                            style: mainButtonStyle(buttonSize, blue),
+                            onPressed: (()async {
+                              AppUtility.fakeCall();
+                            }),
+                            child: Text("Fake Call", style: TextStyle(color: white, fontSize: 20))
+                          ),
+                          ],
                         ),
-                        onPressed: (()async {
-                          _callNumber();
-                          _sendSMS();
-                        }),
-                        child: Text("S O S", style: TextStyle(color: white, fontSize: 40))
+                        SizedBox(height : screenSize.width*0.05),
+                        bottomBar(context),
+                          
+                        ],
                       ),
-                      
-                      SizedBox(height: 20,),
-                      
-                      TextButton(
-                        style: TextButton.styleFrom(
-                          backgroundColor: red,
-                          padding: EdgeInsets.symmetric(horizontal: 20),
-                          elevation: 2,
-                          fixedSize: Size(300, 80),
-                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-                        ),
-                        onPressed: (()async {
-                          _fakeCall();
-                        }),
-                        child: Text("FAKE CALL", style: TextStyle(color: white, fontSize: 40))
-                      ),
-                    
                     ],
                   ),
                 ),
-              ),
-            ]
-            
-            ),
+              ]
               
-          
+              ),
+                
+            
+          ),
         );
       }
     );

@@ -1,0 +1,68 @@
+<!-- <FrameLayout
+    android:id="@+id/widget_root"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="300dp"
+    android:layout_height="150dp">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#1f303d">
+        <LinearLayout
+        android:id="@+id/linearLayout1"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:orientation="horizontal" >
+            <Button
+                android:id="@+id/bt_update"
+                android:layout_width="130dp"
+                android:layout_height="150dp"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:text="call"
+                android:textColor="@android:color/holo_blue_dark"
+                android:textSize="12sp"/>
+            <Button
+                android:id="@+id/bt_update1"
+                android:layout_width="130dp"
+                android:layout_height="150dp"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
+                android:text="SOS"
+                android:textColor="@android:color/holo_blue_dark"
+                android:textSize="12sp" />
+        </LinearLayout>
+    </RelativeLayout>
+</FrameLayout> -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/widget_root"
+    android:layout_width="300dp"
+    android:layout_height="150dp">
+    <!-- android:orientation="horizontal" -->
+    <!-- android:background="@android:color/white"> -->
+
+    <Button
+        android:id="@+id/bt_update"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:padding="10dp"
+        android:text="CALL"
+        android:textColor="@android:color/black"
+        android:textSize="12sp"/>
+
+    <Button
+        android:id="@+id/bt_update1"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:padding="10dp"
+        android:text="SOS"
+        android:textColor="@android:color/black"
+        android:textSize="12sp"/>
+
+</LinearLayout>

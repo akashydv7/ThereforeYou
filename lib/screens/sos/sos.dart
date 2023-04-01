@@ -1,5 +1,3 @@
-import 'dart:ffi';
-
 import 'package:background_sms/background_sms.dart';
 
 import 'package:flutter/services.dart';
@@ -7,10 +5,7 @@ import 'package:first/services/auth.dart';
 import 'package:flutter/material.dart';
 import 'package:hypertrack_plugin/hypertrack.dart';
 import 'package:first/services/networking.dart';
-import 'package:share/share.dart';
-import 'package:flutter_sms/flutter_sms.dart';
 import 'dart:convert';
-//TODO Add your publishablekey here
 const String publishableKey ='jeamuwzWUK0l6AC0RFbJsnYUPLgAsR_p9Y1CZeWwPkIR6Od36j8Hn5y-Kgxtx4EyjTARlCPy94BaKWNT5Ceykw';
 
 class HyperTrackQuickStart extends StatefulWidget {

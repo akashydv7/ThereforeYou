@@ -84,7 +84,7 @@ class AuthService with ChangeNotifier {
       basicauth = 'Basic '+base64Encode(utf8.encode('$user.userid:$password'));
       _status = Status.Registered;
       notifyListeners();
-      await DatabaseService(uid: user!.uid).updateUserData('name', "xx", "xx", "xx", email, _auth.currentUser!.uid);
+      await DatabaseService(uid: user!.uid).updateUserData('name', "xx", "xx", "xx", "xx", "xx", "xx", email, _auth.currentUser!.uid, "xx", "xx");
       return _userFromFirebaseUser(user);
     } catch (error) {
       _status = Status.Unauthenticated;
