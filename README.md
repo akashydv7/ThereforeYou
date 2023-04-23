@@ -1,16 +1,13 @@
-# first
+# ThereFor(e)You
+A women safety application
 
-A new Flutter project.
+## Android application focused on providing women safety in dire situations
 
-## Getting Started
+### Included Features :
+- SOS Trigger (sends location and distress message to emergency contacts)
+- Fake Call 
+- Route earest Police Station
+- Defense Training and Tips
 
-This project is a starting point for a Flutter application.
 
-A few resources to get you started if this is your first Flutter project:
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
-
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
